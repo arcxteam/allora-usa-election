@@ -2,7 +2,7 @@
     "wallet": {
         "addressKeyName": "bangsat-kau-wkwkwk",
         "addressRestoreMnemonic": "what-the-fuck",
-        "alloraHomeDir": "./root/.allorad",
+        "alloraHomeDir": "/root/.allorad",
         "gas": "auto",
         "gasAdjustment": 1.5,
         "nodeRpc": "https://rpc.ankr.com/allora_testnet",
