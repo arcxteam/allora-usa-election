@@ -1,0 +1,33 @@
+{
+    "wallet": {
+        "addressKeyName": "bangsat-kau-wkwkwk",
+        "addressRestoreMnemonic": "what-the-fuck",
+        "alloraHomeDir": "",
+        "gas": "auto",
+        "gasAdjustment": 1.5,
+        "nodeRpc": "https://rpc.ankr.com/allora_testnet",
+        "maxRetries": 3,
+        "delay": 1,
+        "submitTx": true
+    },
+        "worker": [
+       {
+           "topicId": 11,
+           "inferenceEntrypointName": "api-worker-reputer",
+           "loopSeconds": 20,
+           "parameters": {
+               "InferenceEndpoint": "http://inference:8000/inference/{Token}",
+               "Token": "D"
+           }
+       },
+       {
+           "topicId": 11,
+           "inferenceEntrypointName": "api-worker-reputer",
+           "loopSeconds": 21,
+           "parameters": {
+               "InferenceEndpoint": "http://inference:8000/inference/{Token}",
+               "Token": "R"
+           }
+       }
+   ]
+}
