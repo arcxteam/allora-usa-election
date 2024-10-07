@@ -2,7 +2,7 @@
     "wallet": {
         "addressKeyName": "bangsat-kau-wkwkwk",
         "addressRestoreMnemonic": "what-the-fuck",
-        "alloraHomeDir": "",
+        "alloraHomeDir": "./root/.allorad",
         "gas": "auto",
         "gasAdjustment": 1.5,
         "nodeRpc": "https://rpc.ankr.com/allora_testnet",
@@ -17,7 +17,7 @@
            "loopSeconds": 20,
            "parameters": {
                "InferenceEndpoint": "http://inference:8000/inference/{Token}",
-               "Token": "D"
+               "Token": "R"
            }
        },
        {
@@ -26,7 +26,7 @@
            "loopSeconds": 21,
            "parameters": {
                "InferenceEndpoint": "http://inference:8000/inference/{Token}",
-               "Token": "R"
+               "Token": "D"
            }
        }
    ]
