@@ -18,8 +18,8 @@
 
 1. **Clone this repository**
    ```sh
-   git clone https://github.com/arcxteam/worker-usa-election.git
-   cd worker-usa-election
+   git clone https://github.com/arcxteam/allora-usa-election.git
+   cd allora-usa-election
     ```
 2. **Provided and modify model config environment file**
     
