@@ -63,11 +63,11 @@ def train_model(token):
 
     # SVR hyperparameter tuning
     param_grid = {
-        'svr__C': [0.1, 1, 10],
+        'svr__C': [0.1, 1, 10, 34],
         'svr__gamma': ['scale', 'auto'],
         'svr__kernel': ['rbf', 'linear', 'poly', 'sigmoid']
     }
-    grid_search = GridSearchCV(pipeline, param_grid, cv=5, scoring='neg_mean_squared_error', n_jobs=-1)
+    grid_search = GridSearchCV(pipeline, param_grid, cv=5, scoring='neg_mean_squared_error', n_jobs=3)
     grid_search.fit(X_train, y_train)
 
     best_svr = grid_search.best_estimator_
