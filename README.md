@@ -10,9 +10,9 @@
 - **Topic ID**: Running this worker on `TopicId 11`
 - **TOKEN= D** For have inference `D`: Democrat
 - **TOKEN= R** For have inference `R`: Republic
-- **MODEL**: Own your model or modify `model.py`
+- **MODEL**: Own model or modify or check folder /models `model.py`
 - **Probability**: Predict of `%` total `0 - 100%`
-- **Dataset**: polymarket.com
+- **Dataset**: [polymarket.com](https://polymarket.com/elections)
 - **An expected result**: Every `24` hours 
 
 ### Setup Worker
@@ -76,3 +76,8 @@
    Expected response of numbering:
    `
    "value":"xx.xxxx"`
+
+## 3. Note: Checking the initial ALL logs that worker are registered successfully
+   ```sh
+   docker logs  <your container id> 2>&1 | head -n 70
+   ```
