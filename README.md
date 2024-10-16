@@ -17,6 +17,24 @@
 
 ### Setup Worker
 
+The structure run Allora worker node
+
+1. Components
+
+./root/allora-usa-election
+├── config.json
+├── docker-compose.yml
+├── Dockerfile
+├── app.py
+├── model.py
+├── requirements.txt
+├── worker-data
+       └── environment
+├── inference-data
+       └── dataset.csv (R/D)
+       └── model
+             └── model.pkl (R/D)
+
 1. **Clone this repository**
    ```sh
    git clone https://github.com/arcxteam/allora-usa-election.git
@@ -77,7 +95,12 @@
    `
    "value":"xx.xxxx"`
 
-## 3. Note: Checking the initial ALL logs that worker are registered successfully
+## 3. Note: Checking the logs that worker are registered successfully
    ```sh
-   docker logs  <your container id> 2>&1 | head -n 70
+   docker logs  (your container id) 2>&1 | head -n 70
    ```
+
+   ```sh
+   docker logs -f (your container id) 2>&1 | grep -i "Success"
+   ```
+   **Result every 24H: This will only get 1 request per day for topic 11 and points will depends on how your worker prediction vs the ground truth from polymarket**
