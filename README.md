@@ -16,11 +16,9 @@
 - **An expected result**: Every `24` hours 
 
 ### Setup Worker
+The structure of topic 11 - Allora Worker Node
 
-The structure run Allora worker node
-
-1. Components
-
+```sh
 ./root/allora-usa-election
 ├── config.json
 ├── docker-compose.yml
@@ -34,6 +32,7 @@ The structure run Allora worker node
        └── dataset.csv (R/D)
        └── model
              └── model.pkl (R/D)
+```
 
 1. **Clone this repository**
    ```sh
@@ -97,7 +96,7 @@ The structure run Allora worker node
 
 ## 3. Note: Checking the logs that worker are registered successfully
    ```sh
-   docker logs  (your container id) 2>&1 | head -n 70
+   docker logs -f (your container id) 2>&1 | head -n 70
    ```
 
    ```sh
