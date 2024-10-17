@@ -10,7 +10,7 @@ import requests
 import joblib
 from sklearn.svm import SVR
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from config import data_base_path, model_file_path, TOKEN
@@ -57,8 +57,8 @@ def train_model(token):
 
     # Define pipeline with StandardScaler and SVR
     pipeline = Pipeline([
-        ('scaler', StandardScaler()),  # Scaling the features
-        ('svr', SVR())  # Support Vector Regressor
+        ('scaler', StandardScaler()),
+        ('svr', SVR())
     ])
 
     # SVR hyperparameter tuning
@@ -77,9 +77,12 @@ def train_model(token):
     y_pred = best_svr.predict(X_test)
 
     # Evaluate the model
+    mae = mean_absolute_error(y_test, y_pred)
     mse = mean_squared_error(y_test, y_pred)
+    rmse = mean_squared_error(y_test, y_pred, squared=False)
     r2 = r2_score(y_test, y_pred)
-    print(f"Mean Squared Error: {mse}")
+    print(f"Mean Absolute Error: {mae}")
+    print(f"Root Mean Squared Error: {rmse}")
     print(f"R^2 Score: {r2}")
 
     # Save the model
