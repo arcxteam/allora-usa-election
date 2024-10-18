@@ -82,6 +82,7 @@ def train_model(token):
     rmse = mean_squared_error(y_test, y_pred, squared=False)
     r2 = r2_score(y_test, y_pred)
     print(f"Mean Absolute Error: {mae}")
+    print(f"Mean Squared Error: {mse}")
     print(f"Root Mean Squared Error: {rmse}")
     print(f"R^2 Score: {r2}")
 
@@ -103,6 +104,6 @@ def get_inference(token):
         'hour': [12]
     })
 
-    # Scaling single input
+    # Prediction price
     predicted_price = loaded_model.predict(single_input)
     return predicted_price[0]
