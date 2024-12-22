@@ -2,6 +2,7 @@
 # see folder directory /models, copied and modify.
 # getting point for another model
 # own by me: 0xgan/grey
+# Model my SVR untuk VPS-2
 
 import pandas as pd
 import numpy as np
@@ -9,9 +10,9 @@ import os
 import requests
 import joblib
 from sklearn.svm import SVR
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split, RandomizedSearchCV, TimeSeriesSplit
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+from sklearn.preprocessing import RobustScaler
 from sklearn.pipeline import Pipeline
 from config import data_base_path, model_file_path, TOKEN
 
@@ -31,12 +32,12 @@ def get_data(url):
 def download_data(token):
     os.makedirs(data_base_path, exist_ok=True)
     if token == 'R':
-        url = "https://clob.polymarket.com/prices-history?interval=all&market=21742633143463906290569050155826241533067272736897614950488156847949938836455&fidelity=1000"
+        url = "https://clob.polymarket.com/prices-history?interval=all&market=21742633143463906290569050155826241533067272736897614950488156847949938836455&fidelity"
         data = get_data(url)
         save_path = os.path.join(data_base_path, 'polymarket_R.csv')
         data.to_csv(save_path)
     elif token == 'D':
-        url = "https://clob.polymarket.com/prices-history?interval=all&market=69236923620077691027083946871148646972011131466059644796654161903044970987404&fidelity=1000"
+        url = "https://clob.polymarket.com/prices-history?interval=all&market=69236923620077691027083946871148646972011131466059644796654161903044970987404&fidelity"
         data = get_data(url)
         save_path = os.path.join(data_base_path, 'polymarket_D.csv')
         data.to_csv(save_path)
@@ -53,25 +54,29 @@ def train_model(token):
     X = df[['year', 'month', 'day', 'hour']]
     y = df['Predict']
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-    # Define pipeline with StandardScaler and SVR
+    # Define pipeline with RobustScaler and SVR
     pipeline = Pipeline([
-        ('scaler', StandardScaler()),
+        ('scaler', RobustScaler()),
         ('svr', SVR())
     ])
 
-    # SVR hyperparameter tuning
+    # SVM hyperparameter tuning with a more detailed grid
     param_grid = {
-        'svr__C': [0.1, 1, 10, 34],
-        'svr__gamma': ['scale', 'auto'],
-        'svr__kernel': ['rbf', 'linear', 'poly', 'sigmoid']
+        'svr__C': [0.1, 1, 10, 50, 80],
+        'svr__gamma': ['scale', 'auto', 0.01],
+        'svr__kernel': ['rbf', 'linear', 'poly'],
+        'svr__epsilon': [0.01, 0.1]
     }
-    grid_search = GridSearchCV(pipeline, param_grid, cv=5, scoring='neg_mean_squared_error', n_jobs=3)
-    grid_search.fit(X_train, y_train)
+    
+    # Using TimeSeriesSplit for time series cross-validation
+    tscv = TimeSeriesSplit(n_splits=3)
+    random_search = RandomizedSearchCV(pipeline, param_distributions=param_grid, n_iter=15, cv=tscv, scoring='neg_mean_squared_error', n_jobs=4, random_state=0)
+    random_search.fit(X_train, y_train)
 
-    best_svr = grid_search.best_estimator_
-    print(f"Best parameters: {grid_search.best_params_}")
+    best_svr = random_search.best_estimator_
+    print(f"Best parameters: {random_search.best_params_}")
 
     # Making predictions
     y_pred = best_svr.predict(X_test)
@@ -104,6 +109,6 @@ def get_inference(token):
         'hour': [12]
     })
 
-    # Prediction price
+    # Scaling single input
     predicted_price = loaded_model.predict(single_input)
     return predicted_price[0]
